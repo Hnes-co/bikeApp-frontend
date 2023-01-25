@@ -6,10 +6,31 @@
   text-align: center;
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-button {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: rgb(1, 94, 141);
+  border: 2px solid whitesmoke;
+  border-radius: 5px;
+  color: white;
+  font-size: 14pt;
+}
+
+.action-button:hover {
+  cursor: pointer;
+  background-color: rgb(0, 67, 100);
+}
+
 .list {
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
+  max-height: 75vh;
   margin: 2rem;
   padding-bottom: 1rem;
   min-width: 650px;
@@ -25,6 +46,7 @@
 .list-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -38,8 +60,8 @@
   border-top-right-radius: 5px;
 }
 
-.list-item label,
-.list-header label {
+.list-item-journeys label,
+.list-header-journeys label {
   width: 25%;
   text-align: center;
 }
@@ -64,4 +86,33 @@
 .list-button img {
   width: 36px;
   height: 36px;
+}
+
+.result-indices {
+  width: 100%;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.loader {
+  border: 8px solid whitesmoke;
+  border-top: 8px solid rgb(1, 94, 141);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 0.25s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

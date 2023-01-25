@@ -1,63 +1,86 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './app.css';
 import ListItem from './components/ListItem';
-import arrowBack from './assets/arrow_back.png';
-import arrowForward from './assets/arrow_forward.png';
+import ListHeader from './components/ListHeader';
+import ListButtons from './components/ListButtons';
+import Loader from './components/Loader';
 
 function App() {
-  const [journeys, setJourneys] = useState([]);
-  const journeyIndex = useRef(0);
-
-  useEffect(() => {
-    try {
-      fetch('http://localhost:3001/api/journeys/0')
-        .then((response) => {
-          if(!response.ok) {
-            throw new Error("Fetch failed");
-          }
-          response.json().then((resJson) => setJourneys(resJson));
-        });
-    }
-    catch(error) {
-      console.log(error);
-    }
-  }, []);
+  const [loading, setLoading] = useState(false);
+  const listData = useRef([]);
+  const collectionSize = useRef(0);
+  const listIndex = useRef(0);
+  const listType = useRef("");
+  const listStep = useRef(0);
 
   async function handlePagination(action) {
-    if(journeyIndex.current + action >= 0) {
-      journeyIndex.current += action;
+    if(listIndex.current + action >= 0 && listIndex.current + action < collectionSize.current) {
+      setLoading(true);
+      listIndex.current += action;
       try {
-        const response = await fetch(`http://localhost:3001/api/journeys/${journeyIndex.current}`);
+        const response = await fetch(`http://192.168.10.56:3001/api/journeys/${listIndex.current}`);
         if(!response.ok) {
           throw new Error("Fetch failed");
         }
-        setJourneys(await response.json());
+        const resJson = await response.json();
+        listData.current = resJson.data;
       }
       catch(error) {
         console.log(error);
       }
+      setLoading(false);
     }
+  }
+
+  async function getListData(action) {
+    listData.current = [];
+    listType.current = "";
+    listIndex.current = 0;
+    setLoading(true);
+    try {
+      const response = await fetch(`http://192.168.10.56:3001/api/${action}`);
+      if(!response.ok) {
+        throw new Error("Fetch failed");
+      }
+      listType.current = action;
+      const resJson = await response.json();
+      collectionSize.current = resJson.size;
+      listData.current = resJson.data;
+      listStep.current = listData.current.length;
+    }
+    catch(error) {
+      console.log(error);
+    }
+    setLoading(false);
   }
 
   return (
     <div className="container">
+      <h1>Helsinki City Bike App</h1>
+      <div className="action-buttons">
+        <button className="action-button" onClick={() => getListData("journeys")}>List Journeys</button>
+        <button className="action-button" onClick={() => getListData("stations")}>List Stations</button>
+      </div>
       <div className="list">
-        <div className="list-header">
-          <label>Departure Station</label>
-          <label>Return Station</label>
-          <label>Travelled distance</label>
-          <label>Travel duration</label>
-        </div>
+        <Loader loading={loading} />
+        <ListHeader listType={listType.current} />
         <div className="journey-list">
-          {journeys.map((journey, index) => (
-            <ListItem key={journey._id} data={journey} index={index} />
+          {listData.current.map((data, index) => (
+            <ListItem
+              key={listType.current === "journeys" ? data._id : index}
+              data={data}
+              index={index}
+              listType={listType.current}
+            />
           ))}
         </div>
-        <div className="list-buttons">
-          <button className="list-button" title="Previous page" onClick={() => handlePagination(-journeys.length)} ><img src={arrowBack} alt="arrowBack" /></button>
-          <label>{`Showing results ${journeyIndex.current}-${journeyIndex.current + journeys.length}`}</label>
-          <button className="list-button" title="Next page" onClick={() => handlePagination(journeys.length)}><img src={arrowForward} alt="arrowForward" /></button>
-        </div>
+        <ListButtons
+          handlePagination={handlePagination}
+          current={listIndex.current}
+          step={listStep.current}
+          listType={listType.current}
+          collectionSize={collectionSize.current}
+        />
       </div>
     </div>
   );
