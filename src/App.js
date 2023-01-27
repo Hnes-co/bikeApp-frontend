@@ -12,13 +12,15 @@ function App() {
   const listIndex = useRef(0);
   const listType = useRef("");
   const listStep = useRef(0);
+  const sortRule = useRef("");
+  const sortOrder = useRef(1);
 
   async function handlePagination(action) {
     if(listIndex.current + action >= 0 && listIndex.current + action < collectionSize.current) {
       setLoading(true);
       listIndex.current += action;
       try {
-        const response = await fetch(`http://192.168.10.56:3001/api/journeys/${listIndex.current}`);
+        const response = await fetch(`http://192.168.10.56:3001/api/journeys/${listIndex.current}?sort=${sortRule.current}&order=${sortOrder.current}`);
         if(!response.ok) {
           throw new Error("Fetch failed");
         }
@@ -32,17 +34,20 @@ function App() {
     }
   }
 
-  async function getListData(action) {
-    listData.current = [];
-    listType.current = "";
+  async function getListData(collection) {
+    if(collection !== listType.current) {
+      sortRule.current = "";
+      sortOrder.current = 1;
+      listType.current = "";
+    }
     listIndex.current = 0;
     setLoading(true);
     try {
-      const response = await fetch(`http://192.168.10.56:3001/api/${action}`);
+      const response = await fetch(`http://192.168.10.56:3001/api/${collection}?sort=${sortRule.current}&order=${sortOrder.current}`);
       if(!response.ok) {
         throw new Error("Fetch failed");
       }
-      listType.current = action;
+      listType.current = collection;
       const resJson = await response.json();
       collectionSize.current = resJson.size;
       listData.current = resJson.data;
@@ -58,12 +63,12 @@ function App() {
     <div className="container">
       <h1>Helsinki City Bike App</h1>
       <div className="action-buttons">
-        <button className="action-button" onClick={() => getListData("journeys")}>List Journeys</button>
-        <button className="action-button" onClick={() => getListData("stations")}>List Stations</button>
+        <Loader loading={loading} />
+        <button hidden={loading} className="action-button" onClick={() => getListData("journeys")}>List Journeys</button>
+        <button hidden={loading} className="action-button" onClick={() => getListData("stations")}>List Stations</button>
       </div>
       <div className="list">
-        <Loader loading={loading} />
-        <ListHeader listType={listType.current} />
+        <ListHeader listType={listType.current} getListData={getListData} sortRule={sortRule} sortOrder={sortOrder} />
         <div className="journey-list">
           {listData.current.map((data, index) => (
             <ListItem

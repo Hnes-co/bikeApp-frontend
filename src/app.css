@@ -60,6 +60,21 @@
   border-top-right-radius: 5px;
 }
 
+.list-header-journeys label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-header-journeys label:hover {
+  cursor: pointer;
+}
+
+.sortIcon {
+  width: 24px;
+  height: 24px;
+}
+
 .list-item-journeys label,
 .list-header-journeys label {
   width: 25%;
@@ -104,7 +119,8 @@
 
 dialog {
   padding: 0;
-  border: 2px solid gray;
+  border: 0;
+  box-shadow: 0 0 15px 4px rgb(60, 60, 60);
   border-radius: 10px;
 }
 
@@ -157,6 +173,7 @@ dialog {
 .dialog-content-item label {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .loader-wrapper {
@@ -165,12 +182,11 @@ dialog {
 }
 
 .loader {
-  margin: 1rem;
-  border: 8px solid whitesmoke;
-  border-top: 8px solid rgb(1, 94, 141);
+  border: 6px solid whitesmoke;
+  border-top: 6px solid rgb(1, 94, 141);
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   animation: spin 0.3s linear infinite;
 }
 

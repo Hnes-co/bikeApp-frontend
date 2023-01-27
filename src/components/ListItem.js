@@ -11,11 +11,11 @@ function ListItem({ data, index, listType }) {
     dialogRef.current.showModal();
     try {
       const response = await fetch(`http://192.168.10.56:3001/api/stations/${data.ID}`);
-      if(response.ok) {
-        const resJson = await response.json();
-        setStationJourneys({ starts: resJson.journeyStarts, ends: resJson.journeyEnds });
+      if(!response.ok) {
+        throw new Error("station journeys fetch failed");
       }
-      else throw new Error("station journeys fetch failed");
+      const resJson = await response.json();
+      setStationJourneys({ starts: resJson.journeyStarts, ends: resJson.journeyEnds });
     }
     catch(error) {
       console.log(error);

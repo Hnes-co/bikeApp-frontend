@@ -30,11 +30,11 @@ function StationDialog({ dialogRef, station, stationJourneys }) {
           </div>
           <div className="dialog-content-item">
             <img src={lineStartIcon} alt="start"></img>
-            <label>Number of journeys started: {stationJourneys.starts ?? <Loader loading={true} style={loaderStyle} />}</label>
+            <label>Journeys started: {stationJourneys.starts ?? <Loader loading={true} style={loaderStyle} />}</label>
           </div>
           <div className="dialog-content-item list-item-odd">
             <img src={lineEndIcon} alt="end"></img>
-            <label className="list-item-odd">Number of journeys ended: {stationJourneys.ends ?? <Loader loading={true} style={loaderStyle} />}</label>
+            <label className="list-item-odd">Journeys ended: {stationJourneys.ends ?? <Loader loading={true} style={loaderStyle} />}</label>
           </div>
         </div>
       </div>
