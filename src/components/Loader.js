@@ -1,10 +1,10 @@
 import React from "react";
 
-function Loader({ loading }) {
+function Loader({ loading, style = null }) {
   if(loading) {
     return (
       <div className="loader-wrapper">
-        <div className="loader"></div>
+        <div style={style} className="loader"></div>
       </div>
     );
   }
