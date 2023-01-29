@@ -2,15 +2,15 @@ import React, { useState, useRef } from "react";
 import StationDialog from './StationDialog';
 
 function ListItem({ data, index, listType }) {
-  const [stationJourneys, setStationJourneys] = useState({ starts: undefined, ends: undefined });
+  const [stationJourneys, setStationJourneys] = useState({});
   const dialogRef = useRef();
   const classname = `list-item list-item-${listType} ${index % 2 ? "list-item-even" : "list-item-odd"}`;
 
   async function handleStationDialog() {
-    console.log(data.ID);
     dialogRef.current.showModal();
+    setStationJourneys({});
     try {
-      const response = await fetch(`http://192.168.10.56:3001/api/stations/${data.ID}`);
+      const response = await fetch(`http://localhost:3001/api/stations/${data.ID}`);
       if(!response.ok) {
         throw new Error("station journeys fetch failed");
       }

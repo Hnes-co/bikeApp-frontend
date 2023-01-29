@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.app-header {
+  margin: 0.5rem;
+}
+
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -27,14 +31,32 @@
   background-color: rgb(0, 67, 100);
 }
 
+.search-bar {
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 2rem 0 2rem;
+}
+
+.search-bar input,
+.search-bar select {
+  margin: 0 0.5rem 0 0.5rem;
+  font-size: 12pt;
+}
+
+.search-bar img {
+  width: 30px;
+  height: 30px;
+}
+
 .list {
   display: flex;
   flex-direction: column;
-  max-height: 75vh;
-  margin: 2rem;
+  height: 70vh;
+  margin: 0.5rem 2rem 1rem 2rem;
   padding-bottom: 1rem;
   min-width: 650px;
   max-width: 2000px;
+  overflow-x: auto;
 }
 
 .journey-list {
@@ -47,8 +69,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 0.75rem 0.5rem 0.75rem 0.5rem;
+
 }
 
 .list-header {
@@ -144,7 +166,8 @@ dialog {
   height: 30px;
 }
 
-.dialog-header img:hover {
+.dialog-header img:hover,
+.search-bar img:hover {
   cursor: pointer;
   box-shadow: 0 0 0 1px gray;
   border-radius: 5px;
@@ -152,28 +175,42 @@ dialog {
 
 .dialog-header label {
   margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .dialog-content {
+  display: flex;
+  flex-direction: column;
   text-align: left;
+  width: 50vw;
+  height: 30vw;
 }
 
 .dialog-content-item {
   display: flex;
+  box-shadow: 0 0 0 2px gray;
+}
+
+.dialog-map {
+  height: 100%;
+}
+
+.station-info {
+  display: flex;
+  width: 100%;
   align-items: center;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
-.dialog-content-item img {
-  width: 30px;
-  height: 30px;
-  margin-right: 1rem;
-}
-
-.dialog-content-item label {
+.station-info label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.dialog-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 0.5rem;
 }
 
 .loader-wrapper {
@@ -197,5 +234,20 @@ dialog {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .dialog-content-item {
+    flex-direction: column;
+  }
+
+  .search-bar {
+    justify-content: center;
+  }
+
+  .dialog-content {
+    width: 80vw;
+    height: 60vh;
   }
 }
