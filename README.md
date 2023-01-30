@@ -38,4 +38,4 @@ $ npm run cypress:run
 ```
 - cypress:open runs tests with graphical test runner
 - cypress:run runs tests in the command line
-
+- NOTE: the last test (single station list view can be opened) will fail if the database is empty.
